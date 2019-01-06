@@ -15,8 +15,17 @@ router.get('/img', function (req, res, next) {
 });
 
 /* POST */
-router.post('/register', function (req, res, next) {
-    res.render('register')
+router.post('/register', function (req, res) {
+    // var 
+    // account = req.query.account,
+    // password = req.query.password,
+    // repassword = req.query.repassword,
+    // email = req.query.email,
+    // userName = req.query.userName,
+    // sex = req.query.sex,
+    // phoneNumber = req.query.phoneNumber,
+    // address = req.query.address;
+
     fireData.ref('/User').push.set({
         "account": req.query.account,
         "password": req.query.password,
