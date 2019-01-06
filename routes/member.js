@@ -36,6 +36,7 @@ router.post('/register', function (req, res) {
         "phoneNumber": req.query.phoneNumber,
         "address": req.query.address
     })
+    res.render('register', {'title': '註冊會員'})
 
 });
 
