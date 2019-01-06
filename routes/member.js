@@ -14,7 +14,6 @@ router.get('/img', function (req, res, next) {
 
 });
 
-/* POST */
 router.get('/register', function (req, res, next) {
     // var 
     // account = req.query.account,
@@ -26,6 +25,15 @@ router.get('/register', function (req, res, next) {
     // phoneNumber = req.query.phoneNumber,
     // address = req.query.address;
 
+    
+
+    
+
+    res.render('register', {title: '註冊會員', data :'這是會員頁面'})
+
+});
+
+router.get('/send', function(req, res, next) {
     fireData.ref('/User').push.set({
         "account": req.query.account,
         "password": req.query.password,
@@ -36,10 +44,7 @@ router.get('/register', function (req, res, next) {
         "phoneNumber": req.query.phoneNumber,
         "address": req.query.address
     })
-
-    res.render('register', {title: '註冊會員', data :'這是會員頁面'})
-
-});
+})
 
 
 module.exports = router;
