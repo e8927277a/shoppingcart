@@ -1,18 +1,18 @@
 var express = require('express');
 var router = express.Router();
+var fireData = require('../service/firedata')
 /* GET home page. */
 router.get('/', function(req, res, next) {
-
-    var list = {
-        "message": "安安"
-    }
- 
-    res.render('index', { 
-        title: 'hello', 
-        myName : '洧杰',
-        list: list,
-        tag: "<h1>hi</h1>" }
-        );
+    fireData.ref('/User').once('value', function(snapshot) {
+        console.log(snapshot.val());
+        snapshot.forEach(function(data) {
+            var title = data.val().email;
+            if(title == "pig") {
+                res.render('index', {'title': title})
+            }
+        })
+        
+    })
 });
 
 module.exports = router;
