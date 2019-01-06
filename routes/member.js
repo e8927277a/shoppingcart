@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var admin = require("firebase-admin");
+var fireData = require('../service/firedata')
 
 /* GET home page. */
 router.get('/profile', function (req, res, next) {
@@ -14,8 +15,17 @@ router.get('/img', function (req, res, next) {
 });
 
 /* POST */
-router.get('/img', function (req, res, next) {
-    console.log(req.body.test);
+router.post('/register', function (req, res, next) {
+    fireData.ref('/User').push.set({
+        "account": req.query.account,
+        "password": req.query.password,
+        "repassword": req.query.repassword,
+        "email": req.query.email,
+        "userName": req.query.userName,
+        "sex": req.query.sex,
+        "phoneNumber": req.query.phoneNumber,
+        "address": req.query.address
+    })
 
 });
 
