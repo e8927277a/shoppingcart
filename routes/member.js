@@ -37,7 +37,6 @@ router.get('/register', function (req, res, next) {
     //     "address": req.query.address
     // })
 
-    //console.log('username:' + req.query.userName)
     res.render('register', {title: '註冊會員', data :'這是會員頁面'})
 
 });
