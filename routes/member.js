@@ -38,7 +38,7 @@ router.post('/register', function (req, res) {
     // })
 
     console.log('username:' + req.query.userName)
-    res.render('register', {'title': '註冊會員'})
+    res.render('register', {title: '註冊會員', data :'這是會員頁面'})
 
 });
 
