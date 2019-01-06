@@ -13,4 +13,11 @@ router.get('/img', function (req, res, next) {
 
 });
 
+/* POST */
+router.get('/img', function (req, res, next) {
+    console.log(req.body.test);
+
+});
+
+
 module.exports = router;
