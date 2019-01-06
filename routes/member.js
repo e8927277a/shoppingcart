@@ -16,6 +16,7 @@ router.get('/img', function (req, res, next) {
 
 /* POST */
 router.post('/register', function (req, res, next) {
+    res.render('register')
     fireData.ref('/User').push.set({
         "account": req.query.account,
         "password": req.query.password,
