@@ -15,7 +15,7 @@ router.get('/img', function (req, res, next) {
 });
 
 /* POST */
-router.post('/register', function (req, res) {
+router.get('/register', function (req, res, next) {
     // var 
     // account = req.query.account,
     // password = req.query.password,
@@ -37,7 +37,7 @@ router.post('/register', function (req, res) {
     //     "address": req.query.address
     // })
 
-    console.log('username:' + req.query.userName)
+    //console.log('username:' + req.query.userName)
     res.render('register', {title: '註冊會員', data :'這是會員頁面'})
 
 });
