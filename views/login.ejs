@@ -1,0 +1,45 @@
+<% layout('layout') %>
+<h1><%- data %></h1>
+<form class="form_signin" role="form" method="post">
+    <p>帳號:</p>
+    <input type="text" id="account" placeholder="account" name="account">
+    <p>密碼:</p>
+    <input type="text" id="password" placeholder="password" name="password"><br>
+    <input type="submit" id="login" value="login" >
+</form>
+
+<h1 id="show"></h1>
+<script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+<script>
+    // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCAshOfdGvKnBxAvTx9qRIs0mfb0cn3i8U",
+    authDomain: "fir-test-fa2a6.firebaseapp.com",
+    databaseURL: "https://fir-test-fa2a6.firebaseio.com",
+    projectId: "fir-test-fa2a6",
+    storageBucket: "fir-test-fa2a6.appspot.com",
+    messagingSenderId: "750134983793"
+  };
+  firebase.initializeApp(config);
+
+  // database
+var DB = firebase.database();
+var UserRef = DB.ref("User");
+
+// get html element
+var account = document.getElementById("account");
+var password = document.getElementById("password");
+var login = document.getElementById("login");
+var show = document.getElementById("show");
+
+login.addEventListener("click", function(e) {
+    UserRef.once('value', function(snapshot) {
+        console.log(snapshot.val());
+        snapshot.forEach(function(data) {
+            if(account.value == data.val().account && password.value == data.val().password) {
+                show.innerHTML = data.val().userName;
+            }    
+        })
+    })
+})
+</script>

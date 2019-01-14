@@ -1,2 +1,127 @@
 <% layout('layout') %>
-<h1><%- data %></h1>
+<h1>商品清單</h1>
+<ul id="product_list">
+</ul>
+<h1>購物車清單</h1>
+<ul id="shoppingCart_list">
+</ul>
+    <input type="button" id="order" name="order" value="結帳">
+<script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+<script>
+    // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCAshOfdGvKnBxAvTx9qRIs0mfb0cn3i8U",
+    authDomain: "fir-test-fa2a6.firebaseapp.com",
+    databaseURL: "https://fir-test-fa2a6.firebaseio.com",
+    projectId: "fir-test-fa2a6",
+    storageBucket: "fir-test-fa2a6.appspot.com",
+    messagingSenderId: "750134983793"
+  };
+  firebase.initializeApp(config);
+
+   // database
+var DB = firebase.database();
+var ProductRef = DB.ref("Product");
+var OrderRef = DB.ref("Order");
+var UserRef = DB.ref("User");
+
+// get html element
+var add = document.getElementById("add");
+var orderButton = document.getElementById("order");
+var product_list = document.getElementById("product_list");
+var shoppingCart_list = document.getElementById("shoppingCart_list");
+
+var str2 = '';
+var order = []
+var strcookie = document.cookie
+function getdescookie(strcookie,matchcookie){
+    var getMatchCookie;
+    var arrCookie=strcookie.split(";");
+    for(var i=0;i<arrCookie.length;i++){
+         var arr=arrCookie[i].split("=");
+         if(matchcookie == arr[0]){
+                getMatchCookie = arr[1];
+                break;
+         }
+    }
+    return getMatchCookie;
+}
+var resultCookie = getdescookie(strcookie,'user');
+console.log(resultCookie);
+
+ProductRef.on("value", function(snapshot) {
+    var str = ''
+    product_list.innerHTML = str;
+    snapshot.forEach(function(data) {
+        str += '<li>' +
+                '商品名稱: ' + data.val().product_name + '<br>' +
+                '商品介紹: ' + data.val().detail + '<br>' +
+                '商品價格: ' + data.val().price + '<br>' +
+                '<select id="'+data.key+'">' +
+                '<option value="1">1</option>' +
+                '<option value="2">2</option>' +
+                '<option value="3">3</option>' +
+                '<option value="4">4</option>' +
+                '<option value="5">5</option>' +
+                '<option value="6">6</option>' +
+                '<option value="7">7</option>' +
+            '</select>' +
+                '<input type="submit" id="add" value="加入購物車" data-key="' + data.key + '">' +
+            '<br>';
+                '</li>';
+    })
+    product_list.innerHTML = str;
+})
+
+product_list.addEventListener("click", function(e) {
+    var number = document.getElementById(e.target.dataset.key)
+    var item = {}
+    if(e.target.nodeName == 'INPUT') {
+        var key = e.target.dataset.key;
+        DB.ref("Product/" + key).on("value", function(snapshot) {
+            str2 += '商品名稱: ' + snapshot.val().product_name + 
+            '   數量: ' + number.value + 
+            '<br>';
+            console.log(snapshot.val().product_name)
+            item = {
+                "key": e.target.dataset.key,
+                "number": number.value
+            }
+            order.push(item);
+            
+        })
+        console.log(e.target.dataset.key)
+        shoppingCart_list.innerHTML = str2
+        console.log(number.value)
+        console.log(order)
+        
+  }
+})
+
+orderButton.addEventListener("click", function(e) {
+    var user
+    UserRef.on("value", function(snapshot) {
+        snapshot.forEach(function(data) {
+            if(resultCookie == data.val().account) {
+                user = {
+                    "useraccount": data.val().account,
+                    "address": data.val().address,
+                    "email": data.val().email,
+                    "phoneNumber": data.val().phoneNumber,
+                    "sex": data.val().sex,
+                    "userName": data.val().userName,
+                }
+            }
+        })
+        console.log(user)
+        OrderRef.push().set({
+        "user": user,
+        "order": order
+    })
+    })
+    
+    
+})
+
+
+</script>

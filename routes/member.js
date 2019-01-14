@@ -9,42 +9,66 @@ router.get('/profile', function (req, res, next) {
 
 });
 
-router.get('/img', function (req, res, next) {
-    res.render('profile', { title: '33',data :'這是img頁面' });
+router.get('/login', function (req, res, next) {
+    res.render('login', { title: '登入',data :'這是登入頁面' });
 
 });
 
 router.get('/register', function (req, res, next) {
-    // var 
-    // account = req.query.account,
-    // password = req.query.password,
-    // repassword = req.query.repassword,
-    // email = req.query.email,
-    // userName = req.query.userName,
-    // sex = req.query.sex,
-    // phoneNumber = req.query.phoneNumber,
-    // address = req.query.address;
-
     
-
-    
-
-    res.render('register', {title: '註冊會員', data :'這是會員頁面'})
+    res.render('register', {title: '註冊會員', data :'這是會員註冊頁面'})
 
 });
 
-router.get('/send', function(req, res, next) {
-    fireData.ref('/User').push.set({
-        "account": req.query.account,
-        "password": req.query.password,
-        "repassword": req.query.repassword,
-        "email": req.query.email,
-        "userName": req.query.userName,
-        "sex": req.query.sex,
-        "phoneNumber": req.query.phoneNumber,
-        "address": req.query.address
+router.post('/login', function(req, res, next) {
+    var account = req.body['account'],
+        password = req.body['password'];
+
+        fireData.ref('/User').once('value', function(snapshot) {
+        console.log(snapshot.val());
+        snapshot.forEach(function(data) {
+            if(account == data.val().account && password == data.val().password) {
+                res.cookie('user', account)
+                res.render('index', {'title': account})
+            }
+        })
+        
     })
+    console.log(req.cookies.user)
 })
 
+router.get('/orderSearch', function(req, res, next) {
+    var user = req.cookies.user,
+        data,
+        orderkey
+
+    fireData.ref('/Order').once('value', function(snapshot) {
+        snapshot.forEach(function(data) {
+            if(user == data.val().user.useraccount) {
+                data = {
+                    "name": data.val().user.userName,
+                    "sex": data.val().user.sex,
+                    "phonenumber": data.val().user.phoneNumber,
+                    "email": data.val().user.email,
+                    "address": data.val().user.address
+                }
+            }
+                
+                
+                res.render('orderSearch', 
+                {title: "我的訂單", 
+                name: data.name,
+                sex: data.sex,
+                phonenumber: data.phonenumber,
+                email: data.email,
+                address: data.address})
+            
+                
+            
+                
+            
+        })
+    })
+})
 
 module.exports = router;

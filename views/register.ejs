@@ -1,6 +1,5 @@
 <% layout('layout') %>
 <h1><%- data %></h1>
-<form action="/member/send" method="get">
 <p>帳號:</p>
 <input type="text" id="account" placeholder="account" name="account"><br>
 <p>密碼:</p>
@@ -17,5 +16,49 @@
 <input type="text" id="phoneNumber" placeholder="phoneNumber" name="phoneNumber"><br>
 <p>地址:</p>
 <input type="text" id="address" placeholder="address" name="address"><br>
-<input type="submit" id="register" value="register" name="register">
-</form>
+<input type="button" id="register" value="register" >
+<ul id="user_list"></ul>
+<script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+<script>
+    // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCAshOfdGvKnBxAvTx9qRIs0mfb0cn3i8U",
+    authDomain: "fir-test-fa2a6.firebaseapp.com",
+    databaseURL: "https://fir-test-fa2a6.firebaseio.com",
+    projectId: "fir-test-fa2a6",
+    storageBucket: "fir-test-fa2a6.appspot.com",
+    messagingSenderId: "750134983793"
+  };
+  firebase.initializeApp(config);
+
+  // database
+var DB = firebase.database();
+var UserRef = DB.ref("User");
+
+// get html element
+var account = document.getElementById("account");
+var password = document.getElementById("password");
+var repassword = document.getElementById("repassword");
+var email = document.getElementById("email");
+var userName = document.getElementById("userName");
+var sex = document.getElementById("sex");
+var phoneNumber = document.getElementById("phoneNumber");
+var address = document.getElementById("address");
+
+var register = document.getElementById("register");
+var user_list = document.getElementById("user_list");
+
+// add user
+register.addEventListener("click", function(e) {
+  UserRef.push().set({
+  "account": account.value,
+  "password": password.value,
+  "email": email.value,
+  "userName": userName.value,
+  "sex": sex.value,
+  "phoneNumber": phoneNumber.value,
+  "address": address.value
+})
+})
+</script>
+

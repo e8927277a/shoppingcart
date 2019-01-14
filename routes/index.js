@@ -6,8 +6,8 @@ router.get('/', function(req, res, next) {
     fireData.ref('/User').once('value', function(snapshot) {
         console.log(snapshot.val());
         snapshot.forEach(function(data) {
-            var title = data.val().email;
-            if(title == "pig") {
+            var title = "訪客";
+            if(title != data.val().account) {
                 res.render('index', {'title': title})
             }
         })
