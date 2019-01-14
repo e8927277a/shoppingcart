@@ -110,14 +110,12 @@ orderButton.addEventListener("click", function(e) {
                     "phoneNumber": data.val().phoneNumber,
                     "sex": data.val().sex,
                     "userName": data.val().userName,
+                    "order": order
                 }
             }
         })
         console.log(user)
-        OrderRef.push().set({
-        "user": user,
-        "order": order
-    })
+        OrderRef.push().set(user)
     })
     
     

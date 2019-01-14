@@ -40,18 +40,37 @@ router.post('/login', function(req, res, next) {
 router.get('/orderSearch', function(req, res, next) {
     var user = req.cookies.user,
         data,
-        orderkey
+        orderkey,
+        orderitem
 
     fireData.ref('/Order').once('value', function(snapshot) {
+        var str = ''
         snapshot.forEach(function(data) {
-            if(user == data.val().user.useraccount) {
-                data = {
-                    "name": data.val().user.userName,
-                    "sex": data.val().user.sex,
-                    "phonenumber": data.val().user.phoneNumber,
-                    "email": data.val().user.email,
-                    "address": data.val().user.address
+            console.log(data.val().order)
+            orderkey = data.val().order
+                for(item in orderkey) {
+                    fireData.ref('/Product').once('value', function(snapshot) {
+                        snapshot.forEach(function(data) {
+                            console.log(data.key)
+                            if(orderkey[item].key == data.key) {
+                                str += data.val().product_name
+                            //console.log(data.val().product_name)
+                        }
+                        })
+                    })
+                    console.log(str)
+                    console.log(orderkey[item].key)
                 }
+            if(user == data.val().useraccount) {
+                data = {
+                    "name": data.val().userName,
+                    "sex": data.val().sex,
+                    "phonenumber": data.val().phoneNumber,
+                    "email": data.val().email,
+                    "address": data.val().address
+                }
+                
+                
             }
                 
                 
