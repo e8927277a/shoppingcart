@@ -36,4 +36,3 @@ router.post('/profile', function(req, res, next) {
 })
 
 module.exports = router;
-//<%- data %>
